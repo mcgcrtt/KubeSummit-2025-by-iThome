@@ -244,6 +244,331 @@ gcloud firestore indexes composite create \
 
       </google-codelab-step>
     
+      <google-codelab-step label="瞭解程式碼" duration="10">
+        <h2 is-upgraded>1. 查看 Maven 依賴配置 (pom.xml)</h2>
+<p>首先，我們來看看如何在 <a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/pom.xml" target="_blank">pom.xml</a> 使用 BOM 中啟用 Java 用戶端程式庫。</p>
+<p>開啟 <a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/pom.xml#L1-L210" target="_blank">pom.xml</a> 檔案，其中列出 Java 應用程式的依附元件。著重於 Vision、Cloud Storage 和 Firestore API 的用法：</p>
+<pre><code language="language-xml" class="language-xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+        xsi:schemaLocation=&#34;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&#34;&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.2.0-M3&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;services&lt;/groupId&gt;
+        &lt;artifactId&gt;image-analysis&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1&lt;/version&gt;
+        &lt;name&gt;image-analysis&lt;/name&gt;
+        &lt;description&gt;Spring App for Image Analysis&lt;/description&gt;
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+        &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+        &lt;spring-cloud.version&gt;2023.0.0-M2&lt;/spring-cloud.version&gt;
+        &lt;testcontainers.version&gt;1.19.1&lt;/testcontainers.version&gt;
+    &lt;/properties&gt;
+...
+  &lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.google.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;libraries-bom&lt;/artifactId&gt;
+            &lt;version&gt;26.24.0&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+  &lt;/dependencyManagement&gt;
+—
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+                &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-cloud-function-web&lt;/artifactId&gt;
+                &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.google.cloud.functions&lt;/groupId&gt;
+            &lt;artifactId&gt;functions-framework-api&lt;/artifactId&gt;
+            &lt;version&gt;1.1.0&lt;/version&gt;
+            &lt;type&gt;jar&lt;/type&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.google.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;google-cloud-firestore&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.google.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;google-cloud-vision&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.google.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;google-cloud-storage&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p><strong>注意事項</strong>：可以在 <a href="https://cloud.google.com/java/docs/reference" target="_blank">API 程式庫</a> 中找到 Java 用戶端程式庫的相關資訊</p>
+<h2 is-upgraded>2. EventController - 接收 Cloud Storage 事件</h2>
+<p>這項功能是在 <a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java" target="_blank">EventController.java</a> 類別中實作。每當有新圖片上傳至值區時，服務都會收到通知，以便處理：</p>
+<pre><code language="language-java" class="language-java">@RestController
+public class EventController {
+  private static final Logger logger = LoggerFactory.getLogger(EventController.class);
+
+  private static final List&lt;String&gt; requiredFields = Arrays.asList(&#34;ce-id&#34;, &#34;ce-source&#34;, &#34;ce-type&#34;, &#34;ce-specversion&#34;);
+
+  @RequestMapping(value = &#34;/&#34;, method = RequestMethod.POST)
+  public ResponseEntity&lt;String&gt; receiveMessage(
+    @RequestBody Map&lt;String, Object&gt; body, @RequestHeader Map&lt;String, String&gt; headers) throws IOException, InterruptedException, ExecutionException {
+...
+}
+</code></pre>
+<h2 is-upgraded>3. 驗證 Cloud Events 標頭</h2>
+<p>程式碼會繼續驗證 Cloud Events 標頭：</p>
+<pre><code language="language-java" class="language-java">System.out.println(&#34;Header elements&#34;);
+for (String field : requiredFields) {
+    if (headers.get(field) == null) {
+    String msg = String.format(&#34;Missing expected header: %s.&#34;, field);
+    System.out.println(msg);
+    return new ResponseEntity&lt;String&gt;(msg, HttpStatus.BAD_REQUEST);
+    } else {
+    System.out.println(field + &#34; : &#34; + headers.get(field));
+    }
+}
+
+System.out.println(&#34;Body elements&#34;);
+for (String bodyField : body.keySet()) {
+    System.out.println(bodyField + &#34; : &#34; + body.get(bodyField));
+}
+
+if (headers.get(&#34;ce-subject&#34;) == null) {
+    String msg = &#34;Missing expected header: ce-subject.&#34;;
+    System.out.println(msg);
+    return new ResponseEntity&lt;String&gt;(msg, HttpStatus.BAD_REQUEST);
+}
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java#L79-L99" target="_blank">EventController.java</a></p>
+<h2 is-upgraded>4. 呼叫 Vision API 進行圖片分析</h2>
+<p>現在可以建立 Requests，程式碼會準備一項要求並傳送至 Vision API：</p>
+<pre><code language="language-java" class="language-java">try (ImageAnnotatorClient vision = ImageAnnotatorClient.create()) {
+    List&lt;AnnotateImageRequest&gt; requests = new ArrayList&lt;&gt;();
+
+    ImageSource imageSource = ImageSource.newBuilder()
+        .setGcsImageUri(&#34;gs://&#34; + bucketName + &#34;/&#34; + fileName)
+        .build();
+
+    Image image = Image.newBuilder()
+        .setSource(imageSource)
+        .build();
+
+    Feature featureLabel = Feature.newBuilder()
+        .setType(Type.LABEL_DETECTION)
+        .build();
+    Feature featureImageProps = Feature.newBuilder()
+        .setType(Type.IMAGE_PROPERTIES)
+        .build();
+    Feature featureSafeSearch = Feature.newBuilder()
+        .setType(Type.SAFE_SEARCH_DETECTION)
+        .build();
+
+    AnnotateImageRequest request = AnnotateImageRequest.newBuilder()
+        .addFeatures(featureLabel)
+        .addFeatures(featureImageProps)
+        .addFeatures(featureSafeSearch)
+        .setImage(image)
+        .build();
+
+    requests.add(request);
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java#L110-L138" target="_blank">EventController.java</a></p>
+<p>我們要求提供 Vision API 的 3 項主要功能：</p>
+<ul>
+<li><strong>標籤偵測</strong>：瞭解相片內容</li>
+<li><strong>圖片屬性</strong>：為相片提供有趣的屬性 (我們有意瞭解相片的主要顏色)</li>
+<li><strong>安全搜尋</strong>：瞭解圖片是否安全 (不得包含成人 / 醫療 / 兒童不宜 / 暴力內容)</li>
+</ul>
+<h2 is-upgraded>5. 執行 Vision API 分析</h2>
+<p>此時，我們可以呼叫 Vision API：</p>
+<pre><code language="language-java" class="language-java">...
+logger.info(&#34;Calling the Vision API...&#34;);
+BatchAnnotateImagesResponse result = vision.batchAnnotateImages(requests);
+List&lt;AnnotateImageResponse&gt; responses = result.getResponsesList();
+...
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java#L140-L142" target="_blank">EventController.java</a></p>
+<p>以下是 Vision API 的回應範例：</p>
+<pre><code language="language-json" class="language-json">{
+  &#34;faceAnnotations&#34;: [],
+  &#34;landmarkAnnotations&#34;: [],
+  &#34;logoAnnotations&#34;: [],
+  &#34;labelAnnotations&#34;: [
+    {
+      &#34;locations&#34;: [],
+      &#34;properties&#34;: [],
+      &#34;mid&#34;: &#34;/m/01yrx&#34;,
+      &#34;locale&#34;: &#34;&#34;,
+      &#34;description&#34;: &#34;Cat&#34;,
+      &#34;score&#34;: 0.9959855675697327,
+      &#34;confidence&#34;: 0,
+      &#34;topicality&#34;: 0.9959855675697327,
+      &#34;boundingPoly&#34;: null
+    },
+    ✄ - - - ✄
+  ],
+  &#34;textAnnotations&#34;: [],
+  &#34;localizedObjectAnnotations&#34;: [],
+  &#34;safeSearchAnnotation&#34;: {
+    &#34;adult&#34;: &#34;VERY_UNLIKELY&#34;,
+    &#34;spoof&#34;: &#34;UNLIKELY&#34;,
+    &#34;medical&#34;: &#34;VERY_UNLIKELY&#34;,
+    &#34;violence&#34;: &#34;VERY_UNLIKELY&#34;,
+    &#34;racy&#34;: &#34;VERY_UNLIKELY&#34;,
+    &#34;adultConfidence&#34;: 0,
+    &#34;spoofConfidence&#34;: 0,
+    &#34;medicalConfidence&#34;: 0,
+    &#34;violenceConfidence&#34;: 0,
+    &#34;racyConfidence&#34;: 0,
+    &#34;nsfwConfidence&#34;: 0
+  },
+  &#34;imagePropertiesAnnotation&#34;: {
+    &#34;dominantColors&#34;: {
+      &#34;colors&#34;: [
+        {
+          &#34;color&#34;: {
+            &#34;red&#34;: 203,
+            &#34;green&#34;: 201,
+            &#34;blue&#34;: 201,
+            &#34;alpha&#34;: null
+          },
+          &#34;score&#34;: 0.4175916016101837,
+          &#34;pixelFraction&#34;: 0.44456374645233154
+        },
+        ✄ - - - ✄
+      ]
+    }
+  },
+  &#34;error&#34;: null,
+  &#34;cropHintsAnnotation&#34;: {
+    &#34;cropHints&#34;: [
+      {
+        &#34;boundingPoly&#34;: {
+          &#34;vertices&#34;: [
+            { &#34;x&#34;: 0, &#34;y&#34;: 118 },
+            { &#34;x&#34;: 1177, &#34;y&#34;: 118 },
+            { &#34;x&#34;: 1177, &#34;y&#34;: 783 },
+            { &#34;x&#34;: 0, &#34;y&#34;: 783 }
+          ],
+          &#34;normalizedVertices&#34;: []
+        },
+        &#34;confidence&#34;: 0.41695669293403625,
+        &#34;importanceFraction&#34;: 1
+      }
+    ]
+  },
+  &#34;fullTextAnnotation&#34;: null,
+  &#34;webDetection&#34;: null,
+  &#34;productSearchResults&#34;: null,
+  &#34;context&#34;: null
+}
+</code></pre>
+<h2 is-upgraded>6. 處理 Vision API 回應</h2>
+<p>如果沒有傳回任何錯誤，可以繼續：</p>
+<pre><code language="language-java" class="language-java">if (responses.size() == 0) {
+    logger.info(&#34;No response received from Vision API.&#34;);
+    return new ResponseEntity&lt;String&gt;(msg, HttpStatus.BAD_REQUEST);
+}
+
+AnnotateImageResponse response = responses.get(0);
+if (response.hasError()) {
+    logger.info(&#34;Error: &#34; + response.getError().getMessage());
+    return new ResponseEntity&lt;String&gt;(msg, HttpStatus.BAD_REQUEST);
+}
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java#L144-L153" target="_blank">EventController.java</a></p>
+<h2 is-upgraded>7. 取得圖片標籤</h2>
+<p>取得在圖片中認出的內容、類別或主題標籤：</p>
+<pre><code language="language-java" class="language-java">List&lt;String&gt; labels = response.getLabelAnnotationsList().stream()
+    .map(annotation -&gt; annotation.getDescription())
+    .collect(Collectors.toList());
+logger.info(&#34;Annotations found:&#34;);
+for (String label: labels) {
+    logger.info(&#34;- &#34; + label);
+}
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java#L155-L161" target="_blank">EventController.java</a></p>
+<h2 is-upgraded>8. 取得圖片主要顏色</h2>
+<p>瞭解圖片的主要顏色：</p>
+<pre><code language="language-java" class="language-java">String mainColor = &#34;#FFFFFF&#34;;
+ImageProperties imgProps = response.getImagePropertiesAnnotation();
+if (imgProps.hasDominantColors()) {
+    DominantColorsAnnotation colorsAnn = imgProps.getDominantColors();
+    ColorInfo colorInfo = colorsAnn.getColors(0);
+
+    mainColor = rgbHex(
+        colorInfo.getColor().getRed(),
+        colorInfo.getColor().getGreen(),
+        colorInfo.getColor().getBlue());
+
+    logger.info(&#34;Color: &#34; + mainColor);
+}
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java#L163-L175" target="_blank">EventController.java</a></p>
+<h2 is-upgraded>9. 檢查圖片安全性</h2>
+<p>檢查圖片是否能安全顯示：</p>
+<pre><code language="language-java" class="language-java">boolean isSafe = false;
+if (response.hasSafeSearchAnnotation()) {
+    SafeSearchAnnotation safeSearch = response.getSafeSearchAnnotation();
+
+    isSafe = Stream.of(
+        safeSearch.getAdult(), safeSearch.getMedical(), safeSearch.getRacy(),
+        safeSearch.getSpoof(), safeSearch.getViolence())
+    .allMatch( likelihood -&gt;
+        likelihood != Likelihood.LIKELY &amp;&amp; likelihood != Likelihood.VERY_LIKELY
+    );
+
+    logger.info(&#34;Safe? &#34; + isSafe);
+}
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java#L177-L189" target="_blank">EventController.java</a></p>
+<p>檢查成人 / 假冒 / 醫療 / 暴力 / 兒童不宜的特徵。</p>
+<h2 is-upgraded>10. 儲存結果到 Firestore</h2>
+<p>如果安全搜尋的結果沒有問題，我們可以將 Metadata 儲存在 Firestore 中：</p>
+<pre><code language="language-java" class="language-java">// Saving result to Firestore
+if (isSafe) {
+          ApiFuture&lt;WriteResult&gt; writeResult =
+               eventService.storeImage(fileName, labels,
+                                       mainColor);
+          logger.info(&#34;Picture metadata saved in Firestore at &#34; +
+               writeResult.get().getUpdateTime());
+}
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventController.java#L192-L196" target="_blank">EventController.java</a></p>
+<h2 is-upgraded>11. EventService - 儲存圖片資料</h2>
+<p><a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventService.java" target="_blank">EventService.java</a> 負責將圖片分析結果儲存到 Firestore：</p>
+<pre><code language="language-java" class="language-java">public ApiFuture&lt;WriteResult&gt; storeImage(String fileName,
+                                         List&lt;String&gt; labels,
+                                         String mainColor) {
+  FirestoreOptions firestoreOptions = FirestoreOptions.getDefaultInstance();
+  Firestore pictureStore = firestoreOptions.getService();
+
+  DocumentReference doc = pictureStore.collection(&#34;pictures&#34;).document(fileName);
+
+  Map&lt;String, Object&gt; data = new HashMap&lt;&gt;();
+  data.put(&#34;labels&#34;, labels);
+  data.put(&#34;color&#34;, mainColor);
+  data.put(&#34;created&#34;, new Date());
+
+  return doc.set(data, SetOptions.merge());
+}
+</code></pre>
+<p>參考完整程式碼：<a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/src/main/java/services/EventService.java#L31-L40" target="_blank">EventService.java</a></p>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="本地建置與測試 (JIT 版本)" duration="10">
         <h2 is-upgraded>1. 建置 &amp; 本地執行 JIT 應用程式</h2>
 <pre><code language="language-bash" class="language-bash"># 使用 Maven Wrapper 建置專案
