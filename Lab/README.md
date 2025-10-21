@@ -121,7 +121,7 @@ gcloud artifacts repositories create native-image-docker-repo \
 # 設定 Bucket 名稱
 export BUCKET_PICTURES=uploaded-pictures-${PROJECT_ID}
 
-# 建立 Bucket (位於歐洲區域)
+# 建立 Bucket (位於台灣區域)
 gsutil mb -l asia-east1 gs://${BUCKET_PICTURES}
 
 # 啟用統一的 Bucket 層級存取控制
