@@ -31,7 +31,7 @@
 
 ```bash
 # Clone workshop repository
-https://github.com/mcgcrtt/KubeSummit-2025-by-iThome.git
+git clone https://github.com/mcgcrtt/KubeSummit-2025-by-iThome.git
 cd spring-native-workshop/Lab
 
 # 執行安裝腳本
