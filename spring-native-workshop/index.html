@@ -143,6 +143,9 @@ gcloud auth application-default login
 export PROJECT_ID=$(gcloud config get-value project)
 export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format=&#39;value(projectNumber)&#39;)
 
+# 設定 Bucket 名稱 (後續需要建立 GCS Bucket)
+export BUCKET_PICTURES=uploaded-pictures-${PROJECT_ID}
+
 # 設定 gcloud 預設值
 gcloud config set project ${PROJECT_ID}
 gcloud config set run/platform managed
@@ -157,7 +160,8 @@ gcloud services enable \
     run.googleapis.com \
     artifactregistry.googleapis.com \
     eventarc.googleapis.com \
-    pubsub.googleapis.com
+    pubsub.googleapis.com \
+    firestore.googleapis.com
 </code></pre>
 <h2 is-upgraded>4. 建立 Artifact Registry Repository</h2>
 <ul>
@@ -186,10 +190,7 @@ gcloud artifacts repositories create native-image-docker-repo \
 <ul>
 <li>使用 <code>gcloud CLI</code> 或者從 <code>GCP Console</code> 建立，用於儲存上傳圖片的 GCS Bucket：</li>
 </ul>
-<pre><code language="language-bash" class="language-bash"># 設定 Bucket 名稱
-export BUCKET_PICTURES=uploaded-pictures-${PROJECT_ID}
-
-# 建立 Bucket (位於歐洲區域)
+<pre><code language="language-bash" class="language-bash"># 建立 Bucket (位於歐洲區域)
 gsutil mb -l asia-east1 gs://${BUCKET_PICTURES}
 
 # 啟用統一的 Bucket 層級存取控制
@@ -570,7 +571,16 @@ if (isSafe) {
       </google-codelab-step>
     
       <google-codelab-step label="本地建置與測試 (JIT 版本)" duration="10">
-        <h2 is-upgraded>1. 建置 &amp; 本地執行 JIT 應用程式</h2>
+        <h2 is-upgraded>0. 確認工作目錄</h2>
+<p><strong>重要提醒</strong>：前面在 GCP Console 建立 Firestore 等操作時，可能會導致 VM 的 SSH 連線逾時中斷。重新連線後，請務必確認您目前的工作目錄是否正確。</p>
+<p>執行以下指令確認並切換到正確的目錄：</p>
+<pre><code language="language-bash" class="language-bash"># 確認當前目錄
+pwd
+
+# 如果不在 Lab 目錄，請切換到正確路徑
+cd ~/spring-native-workshop/Lab
+</code></pre>
+<h2 is-upgraded>1. 建置 &amp; 本地執行 JIT 應用程式</h2>
 <pre><code language="language-bash" class="language-bash"># 使用 Maven Wrapper 建置專案
 ./mvnw package -Pjit
 </code></pre>
@@ -600,7 +610,16 @@ docker run --rm image-analysis-maven-jit:latest
       </google-codelab-step>
     
       <google-codelab-step label="本地建置與測試 (Native 版本)" duration="25">
-        <h2 is-upgraded>1. 建置 &amp; 本地執行 Native 執行檔</h2>
+        <h2 is-upgraded>0. 確認工作目錄</h2>
+<p><strong>重要提醒</strong>：前面在 GCP Console 建立 Firestore 等操作時，可能會導致 VM 的 SSH 連線逾時中斷。重新連線後，請務必確認您目前的工作目錄是否正確。</p>
+<p>執行以下指令確認並切換到正確的目錄：</p>
+<pre><code language="language-bash" class="language-bash"># 確認當前目錄
+pwd
+
+# 如果不在 Lab 目錄，請切換到正確路徑
+cd ~/spring-native-workshop/Lab
+</code></pre>
+<h2 is-upgraded>1. 建置 &amp; 本地執行 Native 執行檔</h2>
 <pre><code language="language-bash" class="language-bash"># 使用 native profile 建置原生執行檔
 ./mvnw native:compile -Pnative
 </code></pre>
@@ -676,10 +695,7 @@ docker images | grep image-analysis
     
       <google-codelab-step label="部署到 Cloud Run (JIT 版本)" duration="5">
         <h2 is-upgraded>1. 設定 Docker 認證</h2>
-<pre><code language="language-bash" class="language-bash"># 設定環境變數
-export PROJECT_ID=$(gcloud config get-value project)
-
-# 設定 Docker 認證
+<pre><code language="language-bash" class="language-bash"># 設定 Docker 認證
 gcloud auth configure-docker asia-east1-docker.pkg.dev
 </code></pre>
 <h2 is-upgraded>2. 標記並推送 JIT 映像檔</h2>

@@ -139,6 +139,9 @@ gcloud auth application-default login
 export PROJECT_ID=$(gcloud config get-value project)
 export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
 
+# 設定 Bucket 名稱 (後續需要建立 GCS Bucket)
+export BUCKET_PICTURES=uploaded-pictures-${PROJECT_ID}
+
 # 設定 gcloud 預設值
 gcloud config set project ${PROJECT_ID}
 gcloud config set run/platform managed
@@ -156,7 +159,8 @@ gcloud services enable \
     run.googleapis.com \
     artifactregistry.googleapis.com \
     eventarc.googleapis.com \
-    pubsub.googleapis.com
+    pubsub.googleapis.com \
+    firestore.googleapis.com
 ```
 
 ### 4. 建立 Artifact Registry Repository
@@ -193,9 +197,6 @@ Duration: 0:02:00
 - 使用 `gcloud CLI` 或者從 `GCP Console` 建立，用於儲存上傳圖片的 GCS Bucket：
 
 ```bash
-# 設定 Bucket 名稱
-export BUCKET_PICTURES=uploaded-pictures-${PROJECT_ID}
-
 # 建立 Bucket (位於歐洲區域)
 gsutil mb -l asia-east1 gs://${BUCKET_PICTURES}
 
@@ -649,6 +650,20 @@ public ApiFuture<WriteResult> storeImage(String fileName,
 ## 本地建置與測試 (JIT 版本)
 Duration: 0:10:00
 
+### 0. 確認工作目錄
+
+> **重要提醒**：前面在 GCP Console 建立 Firestore 等操作時，可能會導致 VM 的 SSH 連線逾時中斷。重新連線後，請務必確認您目前的工作目錄是否正確。
+
+執行以下指令確認並切換到正確的目錄：
+
+```bash
+# 確認當前目錄
+pwd
+
+# 如果不在 Lab 目錄，請切換到正確路徑
+cd ~/spring-native-workshop/Lab
+```
+
 ### 1. 建置 & 本地執行 JIT 應用程式
 
 ```bash
@@ -692,6 +707,20 @@ docker run --rm image-analysis-maven-jit:latest
 
 ## 本地建置與測試 (Native 版本)
 Duration: 0:25:00
+
+### 0. 確認工作目錄
+
+> **重要提醒**：前面在 GCP Console 建立 Firestore 等操作時，可能會導致 VM 的 SSH 連線逾時中斷。重新連線後，請務必確認您目前的工作目錄是否正確。
+
+執行以下指令確認並切換到正確的目錄：
+
+```bash
+# 確認當前目錄
+pwd
+
+# 如果不在 Lab 目錄，請切換到正確路徑
+cd ~/spring-native-workshop/Lab
+```
 
 ### 1. 建置 & 本地執行 Native 執行檔
 
@@ -782,9 +811,6 @@ Duration: 0:05:00
 ### 1. 設定 Docker 認證
 
 ```bash
-# 設定環境變數
-export PROJECT_ID=$(gcloud config get-value project)
-
 # 設定 Docker 認證
 gcloud auth configure-docker asia-east1-docker.pkg.dev
 ```
