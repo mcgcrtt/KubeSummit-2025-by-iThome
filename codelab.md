@@ -197,7 +197,7 @@ Duration: 0:02:00
 - 使用 `gcloud CLI` 或者從 `GCP Console` 建立，用於儲存上傳圖片的 GCS Bucket：
 
 ```bash
-# 建立 Bucket (位於歐洲區域)
+# 建立 Bucket (位於亞洲區域)
 gsutil mb -l asia-east1 gs://${BUCKET_PICTURES}
 
 # 啟用統一的 Bucket 層級存取控制
