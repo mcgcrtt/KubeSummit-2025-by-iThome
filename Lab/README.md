@@ -82,26 +82,15 @@ gcloud config set eventarc/location asia-east1
 ### 啟用所需的 Google Cloud API
 
 ```bash
-# 啟用 Vision API (圖片分析)
-gcloud services enable vision.googleapis.com
-
-# 啟用 Cloud Functions API
-gcloud services enable cloudfunctions.googleapis.com
-
-# 啟用 Cloud Build API
-gcloud services enable cloudbuild.googleapis.com
-
-# 啟用 Cloud Run API
-gcloud services enable run.googleapis.com
-
-# 啟用 Artifact Registry API
-gcloud services enable artifactregistry.googleapis.com
-
-# 啟用 Eventarc API
-gcloud services enable eventarc.googleapis.com
-
-# 啟用 Pub/Sub API (Eventarc 需要)
-gcloud services enable pubsub.googleapis.com
+# 啟用 Vision API (圖片分析)、Cloud Functions API、Cloud Build API、Cloud Run API、Artifact Registry API、Eventarc API、Pub/Sub API (Eventarc 需要)
+gcloud services enable \
+    vision.googleapis.com \
+    cloudfunctions.googleapis.com \
+    cloudbuild.googleapis.com \
+    run.googleapis.com \
+    artifactregistry.googleapis.com \
+    eventarc.googleapis.com \
+    pubsub.googleapis.com
 ```
 
 ### 建立 Artifact Registry Repository
