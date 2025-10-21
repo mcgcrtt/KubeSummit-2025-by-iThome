@@ -253,16 +253,16 @@ gcloud auth configure-docker asia-east1-docker.pkg.dev
 
 ```bash
 # 標記映像檔
-docker tag image-analysis-maven-jit asia-east1-docker.pkg.dev/$PROJECT_ID/jit-image-docker-repo/lab2-jit-image:v1
+docker tag image-analysis-maven-jit asia-east1-docker.pkg.dev/$PROJECT_ID/jit-image-docker-repo/jit-image:v1
 
 # 推送到 Artifact Registry
-docker push asia-east1-docker.pkg.dev/$PROJECT_ID/jit-image-docker-repo/lab2-jit-image:v1
+docker push asia-east1-docker.pkg.dev/$PROJECT_ID/jit-image-docker-repo/jit-image:v1
 
 # 部署到 Cloud Run
 gcloud run deploy my-jit-service \
-  --image asia-east1-docker.pkg.dev/$PROJECT_ID/jit-image-docker-repo/lab2-jit-image:v1 \
+  --image asia-east1-docker.pkg.dev/$PROJECT_ID/jit-image-docker-repo/jit-image:v1 \
   --region asia-east1 \
-  --memory=2Gi \
+  --memory 2Gi \
   --allow-unauthenticated
 ```
 
@@ -270,16 +270,16 @@ gcloud run deploy my-jit-service \
 
 ```bash
 # 標記映像檔
-docker tag image-analysis-maven-native asia-east1-docker.pkg.dev/$PROJECT_ID/native-image-docker-repo/lab2-native-image:v1
+docker tag image-analysis-maven-native asia-east1-docker.pkg.dev/$PROJECT_ID/native-image-docker-repo/native-image:v1
 
 # 推送到 Artifact Registry
-docker push asia-east1-docker.pkg.dev/$PROJECT_ID/native-image-docker-repo/lab2-native-image:v1
+docker push asia-east1-docker.pkg.dev/$PROJECT_ID/native-image-docker-repo/native-image:v1
 
 # 部署到 Cloud Run
 gcloud run deploy my-native-service \
-  --image asia-east1-docker.pkg.dev/$PROJECT_ID/native-image-docker-repo/lab2-native-image:v1 \
+  --image asia-east1-docker.pkg.dev/$PROJECT_ID/native-image-docker-repo/native-image:v1 \
   --region asia-east1 \
-  --memory=2Gi \
+  --memory 2Gi \
   --allow-unauthenticated
 ```
 
@@ -342,18 +342,6 @@ gsutil cp /path/to/your/image.jpg gs://${BUCKET_PICTURES}/
 
 # 或使用 gcloud 指令
 gcloud storage cp /path/to/your/image.jpg gs://${BUCKET_PICTURES}/
-```
-
-### 查看 Cloud Run 日誌
-
-使用以下指令查看服務日誌：
-
-```bash
-# 查看 JIT 服務日誌
-gcloud logging read "resource.labels.service_name=my-jit-service" --limit 50 --format=json
-
-# 查看 Native 服務日誌
-gcloud logging read "resource.labels.service_name=my-native-service" --limit 50 --format=json
 ```
 
 ### 驗證 Firestore 資料
