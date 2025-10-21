@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Native Workshop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .intro {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .intro h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .labs {
+            margin-top: 40px;
+        }
+
+        .labs h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .lab-card {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lab-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .lab-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .lab-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .lab-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .lab-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #5568d3;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Spring Native Workshop</h1>
+            <p class="subtitle">學習如何建置和部署高效能的 Spring Native 應用程式</p>
+        </header>
+
+        <div class="intro">
+            <h2>關於此 Workshop</h2>
+            <p>
+                Spring Native 讓您能夠將 Spring 應用程式編譯成原生執行檔，顯著提升啟動速度並減少記憶體使用量。
+                透過本實驗，您將建置一個圖片分析應用程式，整合 Google Cloud Vision API、Cloud Storage 和 Firestore，
+                並比較 JIT 與 Native 版本在 Google Cloud Run 上的效能差異。
+            </p>
+        </div>
+
+        <div class="labs">
+            <h2>實驗內容</h2>
+
+            <div class="lab-card" onclick="window.location.href='spring-native-workshop-lab/index.html#0'">
+                <h3>Spring Native Workshop - Image Analysis Application</h3>
+                <div class="lab-meta">
+                    <span>⏱️ 時間：約 50 分鐘</span>
+                    <span>📊 難度：中級</span>
+                </div>
+                <p>
+                    建置一個完整的圖片分析應用程式，學習如何使用 Maven 建置 JIT 和 Native 版本，
+                    整合 Google Cloud Vision API 進行圖片辨識，使用 Eventarc 建立事件驅動架構，
+                    並將應用程式部署到 Cloud Run。透過實際案例比較兩種版本在啟動時間、記憶體使用和映像檔大小的差異。
+                </p>
+                <div class="tags">
+                    <span class="tag">Spring Boot</span>
+                    <span class="tag">GraalVM</span>
+                    <span class="tag">Maven</span>
+                    <span class="tag">Cloud Run</span>
+                    <span class="tag">Vision API</span>
+                    <span class="tag">Firestore</span>
+                    <span class="tag">Eventarc</span>
+                </div>
+                <br><br>
+                <a href="spring-native-workshop/index.html#0" class="btn">開始實驗 →</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Created by Sean Chen | Powered by Google Codelabs</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2025-10-21T13:41:26+08:00",
+  "id": "spring-native-workshop",
+  "duration": 105,
+  "title": "Spring Native Workshop - Image Analysis Application",
+  "summary": "Spring Native Workshop - 學習如何建置和部署 Spring Native 應用程式到 Google Cloud Run",
+  "source": "codelab.md",
+  "theme": "",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "spring",
+    "java",
+    "native",
+    "cloud",
+    "maven",
+    "graalvm"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/mcgcrtt/KubeSummit-2025-by-iThome",
+  "url": "spring-native-workshop"
+}
