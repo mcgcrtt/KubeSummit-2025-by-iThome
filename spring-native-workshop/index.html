@@ -97,7 +97,7 @@
 <p class="image-container"><img alt="SSH to VM" src="img/d3153c8bb752e92f.png"></p>
 <p><strong>注意</strong>：Native Image 編譯需要較多記憶體，建議至少使用 16 GB 記憶體的機器類型。</p>
 <h2 is-upgraded>3. 環境設定</h2>
-<p>連線到 VM 後，安裝以下工具（可使用 <code>Lab/env/setup.sh</code> 腳本自動安裝）：</p>
+<p>連線到 VM 後，先切換到 root 權限，然後安裝以下工具（可使用 <code>Lab/env/setup.sh</code> 腳本自動安裝）：</p>
 <ul>
 <li>Docker</li>
 <li>build-essential (gcc, g++, make)</li>
@@ -106,7 +106,10 @@
 <li>Maven</li>
 </ul>
 <p><strong>快速安裝</strong>：</p>
-<pre><code language="language-bash" class="language-bash"># Clone workshop repository (如果您的專案在 GitHub)
+<pre><code language="language-bash" class="language-bash"># 切換到 root 權限，讓後續操作都以 root 身份執行
+sudo -i
+
+# Clone workshop repository (如果您的專案在 GitHub)
 git clone https://github.com/mcgcrtt/KubeSummit-2025-by-iThome.git
 cd Lab
 

@@ -81,7 +81,7 @@ Duration: 0:08:00
 
 ### 3. 環境設定
 
-連線到 VM 後，安裝以下工具（可使用 `Lab/env/setup.sh` 腳本自動安裝）：
+連線到 VM 後，先切換到 root 權限，然後安裝以下工具（可使用 `Lab/env/setup.sh` 腳本自動安裝）：
 - Docker
 - build-essential (gcc, g++, make)
 - SDKMAN
@@ -91,9 +91,12 @@ Duration: 0:08:00
 **快速安裝**：
 
 ```bash
+# 切換到 root 權限，讓後續操作都以 root 身份執行
+sudo -i
+
 # Clone workshop repository (如果您的專案在 GitHub)
 git clone https://github.com/mcgcrtt/KubeSummit-2025-by-iThome.git
-cd spring-native-workshop/Lab
+cd Lab
 
 # 執行安裝腳本
 chmod +x ./env/setup.sh
