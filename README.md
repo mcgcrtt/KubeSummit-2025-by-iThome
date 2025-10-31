@@ -13,6 +13,8 @@
 
 - [ ] 議程頁面: https://k8s.ithome.com.tw/2025/workshop-page/4125
 
+- [ ] Workshop: https://mcgcrtt.github.io/KubeSummit-2025-by-iThome/
+
 
 ## 從理想到現實：Spring Boot 導入 Native Image 的挑戰與實踐
 
