@@ -11,6 +11,8 @@ feedback link: https://github.com/mcgcrtt/KubeSummit-2025-by-iThome
 ## 概述 & 架構說明
 Duration: 0:02:00
 
+![MC Logo](./images/mc-logo.png)
+
 在本實驗中，您將實作如何：
 - 建置 JIT 和 Native 的 Spring Boot 應用程式
 - 比較兩種版本在映像檔大小、啟動時間和系統資源使用上的差異
@@ -33,6 +35,8 @@ Duration: 0:02:00
 
 ## 前置準備
 Duration: 0:08:00
+
+![MC Logo](./images/mc-logo.png)
 
 ### 1. Google Cloud Project 設定
 
@@ -125,6 +129,8 @@ echo $JAVA_HOME
 ## Google Cloud 認證設定
 Duration: 0:02:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### 1. 登入 Google Cloud
 
 ```bash
@@ -195,6 +201,8 @@ gcloud artifacts repositories create native-image-docker-repo \
 ## 建立 Google Cloud Storage
 Duration: 0:02:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### 1. 建立 Storage Bucket
 
 - 使用 `gcloud CLI` 或者從 `GCP Console` 建立，用於儲存上傳圖片的 GCS Bucket：
@@ -228,6 +236,8 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 
 ## 建立 Firestore 資料庫
 Duration: 0:02:00
+
+![MC Logo](./images/mc-logo.png)
 
 ### 1. 透過 Console 建立 Firestore
 
@@ -268,6 +278,8 @@ gcloud firestore indexes composite create \
 
 ## 瞭解程式碼
 Duration: 0:10:00
+
+![MC Logo](./images/mc-logo.png)
 
 ### 1. 查看 Maven 依賴配置 (pom.xml)
 
@@ -653,6 +665,8 @@ public ApiFuture<WriteResult> storeImage(String fileName,
 ## 本地建置與測試 (JIT 版本)
 Duration: 0:10:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### 0. 確認工作目錄
 
 > **重要提醒**：前面在 GCP Console 建立 Firestore 等操作時，可能會導致 VM 的 SSH 連線逾時中斷。重新連線後，請務必確認您目前的工作目錄是否正確。
@@ -710,6 +724,8 @@ docker run --rm image-analysis-maven-jit:latest
 
 ## 本地建置與測試 (Native 版本)
 Duration: 0:25:00
+
+![MC Logo](./images/mc-logo.png)
 
 ### 0. 確認工作目錄
 
@@ -771,6 +787,8 @@ docker run --rm image-analysis-maven-native:latest
 ## 比較 JIT vs Native
 Duration: 0:04:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### 1. 比較映像檔大小
 
 ```bash
@@ -811,6 +829,8 @@ docker run --rm image-analysis-maven-native
 ## 部署到 Cloud Run (JIT 版本)
 Duration: 0:05:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### 1. 設定 Docker 認證
 
 ```bash
@@ -845,6 +865,8 @@ gcloud run deploy my-jit-service \
 ## 部署到 Cloud Run (Native 版本)
 Duration: 0:25:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### 1. 標記並推送 Native 映像檔
 
 ```bash
@@ -871,6 +893,8 @@ gcloud run deploy my-native-service \
 
 ## 設定 Eventarc 觸發器
 Duration: 0:05:00
+
+![MC Logo](./images/mc-logo.png)
 
 Eventarc 可以讓 Cloud Storage 事件自動觸發 Cloud Run 服務。
 
@@ -912,6 +936,8 @@ gcloud eventarc triggers list --location=asia-east1
 ## 測試事件驅動流程
 Duration: 0:03:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### 1. 上傳圖片到 Cloud Storage
 
 準備一張測試圖片，然後上傳到 Cloud Storage (可以使用 `gcloud CLI` 或從 `GCP Console` 上傳)：
@@ -945,6 +971,8 @@ gcloud storage cp /path/to/your/image.jpg gs://${BUCKET_PICTURES}/
 ## 效能監控與比較
 Duration: 0:02:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### 查看 Cloud Run 指標
 
 1. 前往 [Cloud Run Console](https://console.cloud.google.com/run)
@@ -958,6 +986,8 @@ Duration: 0:02:00
 
 ## 清理資源
 Duration: 0:05:00
+
+![MC Logo](./images/mc-logo.png)
 
 完成實驗後，記得清理資源以避免產生費用，也可以從 `GCP Console` 刪除！
 
@@ -1023,6 +1053,8 @@ gcloud compute instances delete spring-native-workshop-vm \
 ## 重要概念總結
 Duration: 0:03:00
 
+![MC Logo](./images/mc-logo.png)
+
 ### JIT vs Native Image
 
 | 特性 | JIT 編譯 | Native Image |
@@ -1054,6 +1086,8 @@ Duration: 0:03:00
 
 ## 結論
 Duration: 0:02:00
+
+![MC Logo](./images/mc-logo.png)
 
 恭喜完成 Spring Native Workshop！
 

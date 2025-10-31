@@ -29,7 +29,8 @@
                   feedback-link="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome">
     
       <google-codelab-step label="概述 &amp; 架構說明" duration="2">
-        <p>在本實驗中，您將實作如何：</p>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<p>在本實驗中，您將實作如何：</p>
 <ul>
 <li>建置 JIT 和 Native 的 Spring Boot 應用程式</li>
 <li>比較兩種版本在映像檔大小、啟動時間和系統資源使用上的差異</li>
@@ -52,7 +53,8 @@
       </google-codelab-step>
     
       <google-codelab-step label="前置準備" duration="8">
-        <h2 is-upgraded>1. Google Cloud Project 設定</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. Google Cloud Project 設定</h2>
 <p>在開始之前，您需要：</p>
 <ol type="1">
 <li>擁有一個 Google Cloud 專案</li>
@@ -134,7 +136,8 @@ echo $JAVA_HOME
       </google-codelab-step>
     
       <google-codelab-step label="Google Cloud 認證設定" duration="2">
-        <h2 is-upgraded>1. 登入 Google Cloud</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. 登入 Google Cloud</h2>
 <pre><code language="language-bash" class="language-bash"># 登入 Google Cloud
 gcloud auth login
 
@@ -189,7 +192,8 @@ gcloud artifacts repositories create native-image-docker-repo \
       </google-codelab-step>
     
       <google-codelab-step label="建立 Google Cloud Storage" duration="2">
-        <h2 is-upgraded>1. 建立 Storage Bucket</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. 建立 Storage Bucket</h2>
 <ul>
 <li>使用 <code>gcloud CLI</code> 或者從 <code>GCP Console</code> 建立，用於儲存上傳圖片的 GCS Bucket：</li>
 </ul>
@@ -217,7 +221,8 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
       </google-codelab-step>
     
       <google-codelab-step label="建立 Firestore 資料庫" duration="2">
-        <h2 is-upgraded>1. 透過 Console 建立 Firestore</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. 透過 Console 建立 Firestore</h2>
 <ol type="1">
 <li>前往 <a href="https://console.cloud.google.com/firestore" target="_blank">Google Cloud Console - Firestore</a></li>
 <li>點擊「建立資料庫」</li>
@@ -249,7 +254,8 @@ gcloud firestore indexes composite create \
       </google-codelab-step>
     
       <google-codelab-step label="瞭解程式碼" duration="10">
-        <h2 is-upgraded>1. 查看 Maven 依賴配置 (pom.xml)</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. 查看 Maven 依賴配置 (pom.xml)</h2>
 <p>首先，我們來看看如何在 <a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/pom.xml" target="_blank">pom.xml</a> 使用 BOM 中啟用 Java 用戶端程式庫。</p>
 <p>開啟 <a href="https://github.com/mcgcrtt/KubeSummit-2025-by-iThome/blob/master/Lab/pom.xml#L1-L210" target="_blank">pom.xml</a> 檔案，其中列出 Java 應用程式的依附元件。著重於 Vision、Cloud Storage 和 Firestore API 的用法：</p>
 <pre><code language="language-xml" class="language-xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
@@ -574,7 +580,8 @@ if (isSafe) {
       </google-codelab-step>
     
       <google-codelab-step label="本地建置與測試 (JIT 版本)" duration="10">
-        <h2 is-upgraded>0. 確認工作目錄</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>0. 確認工作目錄</h2>
 <p><strong>重要提醒</strong>：前面在 GCP Console 建立 Firestore 等操作時，可能會導致 VM 的 SSH 連線逾時中斷。重新連線後，請務必確認您目前的工作目錄是否正確。</p>
 <p>執行以下指令確認並切換到正確的目錄：</p>
 <pre><code language="language-bash" class="language-bash"># 確認當前目錄
@@ -613,7 +620,8 @@ docker run --rm image-analysis-maven-jit:latest
       </google-codelab-step>
     
       <google-codelab-step label="本地建置與測試 (Native 版本)" duration="25">
-        <h2 is-upgraded>0. 確認工作目錄</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>0. 確認工作目錄</h2>
 <p><strong>重要提醒</strong>：前面在 GCP Console 建立 Firestore 等操作時，可能會導致 VM 的 SSH 連線逾時中斷。重新連線後，請務必確認您目前的工作目錄是否正確。</p>
 <p>執行以下指令確認並切換到正確的目錄：</p>
 <pre><code language="language-bash" class="language-bash"># 確認當前目錄
@@ -653,7 +661,8 @@ docker run --rm image-analysis-maven-native:latest
       </google-codelab-step>
     
       <google-codelab-step label="比較 JIT vs Native" duration="4">
-        <h2 is-upgraded>1. 比較映像檔大小</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. 比較映像檔大小</h2>
 <pre><code language="language-bash" class="language-bash"># 查看兩個版本的映像檔大小
 docker images | grep image-analysis
 </code></pre>
@@ -697,7 +706,8 @@ docker images | grep image-analysis
       </google-codelab-step>
     
       <google-codelab-step label="部署到 Cloud Run (JIT 版本)" duration="5">
-        <h2 is-upgraded>1. 設定 Docker 認證</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. 設定 Docker 認證</h2>
 <pre><code language="language-bash" class="language-bash"># 設定 Docker 認證
 gcloud auth configure-docker asia-east1-docker.pkg.dev
 </code></pre>
@@ -721,7 +731,8 @@ docker push asia-east1-docker.pkg.dev/$PROJECT_ID/jit-image-docker-repo/jit-imag
       </google-codelab-step>
     
       <google-codelab-step label="部署到 Cloud Run (Native 版本)" duration="25">
-        <h2 is-upgraded>1. 標記並推送 Native 映像檔</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. 標記並推送 Native 映像檔</h2>
 <pre><code language="language-bash" class="language-bash"># 標記映像檔
 docker tag image-analysis-maven-native asia-east1-docker.pkg.dev/$PROJECT_ID/native-image-docker-repo/native-image:v1
 
@@ -741,7 +752,8 @@ docker push asia-east1-docker.pkg.dev/$PROJECT_ID/native-image-docker-repo/nativ
       </google-codelab-step>
     
       <google-codelab-step label="設定 Eventarc 觸發器" duration="5">
-        <p>Eventarc 可以讓 Cloud Storage 事件自動觸發 Cloud Run 服務。</p>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<p>Eventarc 可以讓 Cloud Storage 事件自動觸發 Cloud Run 服務。</p>
 <h2 is-upgraded>1. 建立 JIT 服務的 Eventarc Trigger</h2>
 <pre><code language="language-bash" class="language-bash">gcloud eventarc triggers create image-analysis-jit-trigger \
      --destination-run-service=my-jit-service \
@@ -770,7 +782,8 @@ gcloud eventarc triggers list --location=asia-east1
       </google-codelab-step>
     
       <google-codelab-step label="測試事件驅動流程" duration="3">
-        <h2 is-upgraded>1. 上傳圖片到 Cloud Storage</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>1. 上傳圖片到 Cloud Storage</h2>
 <p>準備一張測試圖片，然後上傳到 Cloud Storage (可以使用 <code>gcloud CLI</code> 或從 <code>GCP Console</code> 上傳)：</p>
 <pre><code language="language-bash" class="language-bash"># 上傳圖片
 gsutil cp /path/to/your/image.jpg gs://${BUCKET_PICTURES}/
@@ -794,7 +807,8 @@ gcloud storage cp /path/to/your/image.jpg gs://${BUCKET_PICTURES}/
       </google-codelab-step>
     
       <google-codelab-step label="效能監控與比較" duration="2">
-        <h2 is-upgraded>查看 Cloud Run 指標</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>查看 Cloud Run 指標</h2>
 <ol type="1">
 <li>前往 <a href="https://console.cloud.google.com/run" target="_blank">Cloud Run Console</a></li>
 <li>分別點選 <code>my-jit-service</code> 和 <code>my-native-service</code></li>
@@ -806,7 +820,8 @@ gcloud storage cp /path/to/your/image.jpg gs://${BUCKET_PICTURES}/
       </google-codelab-step>
     
       <google-codelab-step label="清理資源" duration="5">
-        <p>完成實驗後，記得清理資源以避免產生費用，也可以從 <code>GCP Console</code> 刪除！</p>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<p>完成實驗後，記得清理資源以避免產生費用，也可以從 <code>GCP Console</code> 刪除！</p>
 <h2 is-upgraded>1. 刪除 Eventarc Triggers</h2>
 <pre><code language="language-bash" class="language-bash">gcloud eventarc triggers delete image-analysis-jit-trigger --location=asia-east1 --quiet
 gcloud eventarc triggers delete image-analysis-native-trigger --location=asia-east1 --quiet
@@ -850,7 +865,8 @@ gsutil rm -r gs://${BUCKET_PICTURES}
       </google-codelab-step>
     
       <google-codelab-step label="重要概念總結" duration="3">
-        <h2 is-upgraded>JIT vs Native Image</h2>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<h2 is-upgraded>JIT vs Native Image</h2>
 <table>
 <tr><td colspan="1" rowspan="1"><p>特性</p>
 </td><td colspan="1" rowspan="1"><p>JIT 編譯</p>
@@ -906,7 +922,8 @@ gsutil rm -r gs://${BUCKET_PICTURES}
       </google-codelab-step>
     
       <google-codelab-step label="結論" duration="2">
-        <p>恭喜完成 Spring Native Workshop！</p>
+        <p class="image-container"><img alt="MC Logo" src="img/b8d299a6eaeb977f.png"></p>
+<p>恭喜完成 Spring Native Workshop！</p>
 <p>在本實驗中，您已經：</p>
 <ul>
 <li>✅ 建置並比較了 JIT 和 Native 版本的 Spring Boot 應用程式</li>
