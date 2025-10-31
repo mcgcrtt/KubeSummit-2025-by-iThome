@@ -24,6 +24,7 @@
 
 - [ ] 議程頁面: https://k8s.ithome.com.tw/2025/session-page/4101
 
+- [ ] 簡報: [Session Slide.pdf](20251023%20Kubesummit%202025%20-%20Session%20Slide.pdf)
 
 
 
